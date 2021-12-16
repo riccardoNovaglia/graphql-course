@@ -1,3 +1,19 @@
 fileignoreconfig:
-- filename: package-lock.json
+- filename: client/package-lock.json
+  checksum: d26a6373181bad48547e01629f0f974d71c5547084f3d8a07cf888a43e52712c
+  ignore_detectors: [filecontent]
+- filename: server/package-lock.json
+  checksum: 2c8d2bdf9fde69981c05e8d501251a29be7cf72aa671a2e8d61c8f03ab253126
+  ignore_detectors: [filecontent]
+- filename: server/data/companies.json
+  checksum: 6808f7eafefa8abde995e13057593228ea03cf08fb5a46f239d50076f053c769
+  ignore_detectors: [filecontent]
+- filename: server/data/jobs.json
+  checksum: 2b010f7884b725893628addb8a94a4f4b04a85b070993b75edda1c76d3a25e67
+  ignore_detectors: [filecontent]
+- filename: server/data/users.json
+  checksum: 1c0773f5410a396f536ac1e0434b2da02bb5e4358c0dc9bd145ca2ed10ef304c
+  ignore_detectors: [filecontent]
+- filename: server/server.js
+  checksum: fbbfced1b3f71545908c0a25c963aaefd4169a7fbc7c1ac23cbb0fbaa9747f55
   ignore_detectors: [filecontent]
