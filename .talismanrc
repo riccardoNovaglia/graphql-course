@@ -12,8 +12,11 @@ fileignoreconfig:
   checksum: 2b010f7884b725893628addb8a94a4f4b04a85b070993b75edda1c76d3a25e67
   ignore_detectors: [filecontent]
 - filename: server/data/users.json
-  checksum: 1c0773f5410a396f536ac1e0434b2da02bb5e4358c0dc9bd145ca2ed10ef304c
+  checksum: db5c03e9f0839e17385f17bb3055f15222dd27b4c01cd2057b707669a6f30d99
   ignore_detectors: [filecontent]
 - filename: server/server.js
-  checksum: fbbfced1b3f71545908c0a25c963aaefd4169a7fbc7c1ac23cbb0fbaa9747f55
+  checksum: 198929aab401c63cdda79205b59efd0f9c35b327a69056ff594c93658e3ab7db
   ignore_detectors: [filecontent]
+- filename: client/src/LoginForm.js
+  checksum: 9fc4f7091aebe27bdba4466057de76fe30ead1d130d1867961d8a4fa46cb872e
+  ignore_detectors: []

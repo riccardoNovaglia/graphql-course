@@ -1,8 +1,11 @@
+import { getAccessToken } from "./auth";
+
 async function fetchGraphQL(query, variables = undefined) {
   const response = await fetch("/graphql", {
     method: "POST",
     headers: {
       "content-type": "application/json",
+      authorization: `Bearer ${getAccessToken()}`,
     },
     body: JSON.stringify({
       query,
@@ -81,8 +84,7 @@ export async function getCompanyJobs(id) {
   return data.company.jobs;
 }
 
-// TODO: get company id from somewhere. Probably after authentication has been done
-export async function postNewJob(title, description, companyId = "HJRa-DOuG") {
+export async function postNewJob(title, description) {
   const mutation = `
     mutation PostNewJob($newJob: CreateJobRequest) {
       job: createJob(newJob: $newJob) {
@@ -90,7 +92,7 @@ export async function postNewJob(title, description, companyId = "HJRa-DOuG") {
       }
     }
   `;
-  const variables = { newJob: { title, description, companyId } };
+  const variables = { newJob: { title, description } };
   const data = await fetchGraphQL(mutation, variables);
   return data.job;
 }
