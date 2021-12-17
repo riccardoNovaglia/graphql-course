@@ -80,3 +80,17 @@ export async function getCompanyJobs(id) {
   const data = await fetchGraphQL(query, variables);
   return data.company.jobs;
 }
+
+// TODO: get company id from somewhere. Probably after authentication has been done
+export async function postNewJob(title, description, companyId = "HJRa-DOuG") {
+  const mutation = `
+    mutation PostNewJob($newJob: CreateJobRequest) {
+      job: createJob(newJob: $newJob) {
+        id
+      }
+    }
+  `;
+  const variables = { newJob: { title, description, companyId } };
+  const data = await fetchGraphQL(mutation, variables);
+  return data.job;
+}

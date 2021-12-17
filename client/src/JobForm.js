@@ -1,65 +1,48 @@
-import React, { Component } from "react";
+import React from "react";
+import { postNewJob } from "./requests";
+import { useHistory } from "react-router-dom";
 
-export class JobForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { title: "", description: "" };
-  }
-
-  handleChange(event) {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
-  }
-
-  handleClick(event) {
+export function JobForm() {
+  const history = useHistory();
+  async function handleSubmit(event) {
     event.preventDefault();
-    console.log("should post a new job:", this.state);
+    const {
+      title: { value: titleValue },
+      description: { value: descriptionValue },
+    } = event.target;
+    const { id } = await postNewJob(titleValue, descriptionValue);
+    history.push(`/jobs/${id}`);
   }
 
-  render() {
-    const { title, description } = this.state;
-    return (
-      <div>
-        <h1 className="title">New Job</h1>
-        <div className="box">
-          <form>
-            <div className="field">
-              <label className="label">Title</label>
-              <div className="control">
-                <input
-                  className="input"
-                  type="text"
-                  name="title"
-                  value={title}
-                  onChange={this.handleChange.bind(this)}
-                />
-              </div>
+  return (
+    <div>
+      <h1 className="title">New Job</h1>
+      <div className="box">
+        <form onSubmit={handleSubmit}>
+          <div className="field">
+            <label className="label">Title</label>
+            <div className="control">
+              <input className="input" type="text" name="title" id="title" />
             </div>
-            <div className="field">
-              <label className="label">Description</label>
-              <div className="control">
-                <textarea
-                  className="input"
-                  style={{ height: "10em" }}
-                  name="description"
-                  value={description}
-                  onChange={this.handleChange.bind(this)}
-                />
-              </div>
+          </div>
+          <div className="field">
+            <label className="label">Description</label>
+            <div className="control">
+              <textarea
+                className="input"
+                style={{ height: "10em" }}
+                name="description"
+                id="description"
+              />
             </div>
-            <div className="field">
-              <div className="control">
-                <button
-                  className="button is-link"
-                  onClick={this.handleClick.bind(this)}
-                >
-                  Submit
-                </button>
-              </div>
+          </div>
+          <div className="field">
+            <div className="control">
+              <input type="submit" className="button is-link" />
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
-    );
-  }
+    </div>
+  );
 }

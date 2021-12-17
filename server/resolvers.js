@@ -1,18 +1,24 @@
 const db = require("./db");
 
 const Query = {
-  job: (root, args) => db.jobs.get(args.id),
+  job: (parent, args) => db.jobs.get(args.id),
   jobs: () => db.jobs.list(),
-  company: (root, args) => db.companies.get(args.id),
+  company: (parent, args) => db.companies.get(args.id),
+};
+
+const Mutation = {
+  createJob: (parent, { newJob }) => {
+    const newJobId = db.jobs.create(newJob);
+    return db.jobs.get(newJobId);
+  },
 };
 
 const Job = {
-  company: (job) => db.companies.get(job.companyId),
+  company: (parent) => db.companies.get(parent.companyId),
 };
 
 const Company = {
-  jobs: (company) =>
-    db.jobs.list().filter((job) => job.companyId === company.id),
+  jobs: (parent) => db.jobs.list().filter((job) => job.companyId === parent.id),
 };
 
-module.exports = { Company, Job, Query };
+module.exports = { Company, Job, Query, Mutation };
