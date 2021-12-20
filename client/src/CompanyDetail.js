@@ -1,29 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
-import { getCompany, getCompanyJobs } from "./requests";
+import { findCompanyQuery } from "./requests";
 import { JobList } from "./JobList";
+import { useQuery } from "@apollo/react-hooks";
 
 export function CompanyDetail() {
-  const [company, setCompany] = useState();
-  const [companyJobs, setCompanyJobs] = useState();
   const { companyId } = useParams();
+  const { data, loading, error } = useQuery(findCompanyQuery, {
+    variables: { id: companyId },
+  });
+  const company = data?.company;
+  const companyJobs = company?.jobs || [];
 
-  useEffect(() => {
-    async function getCompanyData() {
-      const company = await getCompany(companyId);
-      setCompany(company);
-    }
-    async function getCompanyJobsData() {
-      const jobs = await getCompanyJobs(companyId);
-      setCompanyJobs(jobs);
-    }
-    getCompanyData();
-    getCompanyJobsData();
-  }, [companyId]);
-
-  if (!company || !companyJobs) {
-    return <h1>Loading...</h1>;
-  }
+  if (loading) return <h1>Loading...</h1>;
+  if (error) return <h1>Whops, something didn't work</h1>;
 
   return (
     <div>

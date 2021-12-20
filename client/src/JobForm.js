@@ -1,18 +1,27 @@
 import React from "react";
-import { postNewJob } from "./requests";
-import { useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+import { useMutation } from "@apollo/react-hooks";
+import { postNewJobMutation, updateJobCacheFn } from "./requests";
 
 export function JobForm() {
-  const history = useHistory();
   async function handleSubmit(event) {
     event.preventDefault();
     const {
       title: { value: titleValue },
       description: { value: descriptionValue },
     } = event.target;
-    const { id } = await postNewJob(titleValue, descriptionValue);
-    history.push(`/jobs/${id}`);
+    await postJob({
+      variables: {
+        newJob: { title: titleValue, description: descriptionValue },
+      },
+      update: updateJobCacheFn,
+    });
   }
+  const [postJob, { data, loading, error }] = useMutation(postNewJobMutation);
+
+  if (error) return <h1>Whops, something didn't work</h1>;
+
+  if (data?.job?.id) return <Redirect to={`/jobs/${data?.job?.id}`} />;
 
   return (
     <div>
@@ -38,7 +47,11 @@ export function JobForm() {
           </div>
           <div className="field">
             <div className="control">
-              <input type="submit" className="button is-link" />
+              <input
+                type="submit"
+                className="button is-link"
+                disabled={loading}
+              />
             </div>
           </div>
         </form>

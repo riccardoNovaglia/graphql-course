@@ -6,6 +6,8 @@ import { JobBoard } from "./JobBoard";
 import { JobDetail } from "./JobDetail";
 import { JobForm } from "./JobForm";
 import { NavBar } from "./NavBar";
+import { ApolloProvider } from "@apollo/react-hooks";
+import { client } from "./requests";
 
 export function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -14,7 +16,7 @@ export function App() {
   const onLogin = () => setLoggedIn(true);
   return (
     <Router>
-      <div>
+      <ApolloProvider client={client}>
         <NavBar loggedIn={loggedIn} onLogout={onLogout} />
         <section className="section">
           <div className="container">
@@ -31,7 +33,7 @@ export function App() {
             </Switch>
           </div>
         </section>
-      </div>
+      </ApolloProvider>
     </Router>
   );
 }

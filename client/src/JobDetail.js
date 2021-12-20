@@ -1,23 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useQuery } from "@apollo/react-hooks";
 import { Link, useParams } from "react-router-dom";
-import { getJob } from "./requests";
+import { findJobQuery } from "./requests";
 
 export function JobDetail() {
-  const [job, setJob] = useState();
   const { jobId } = useParams();
-  useEffect(() => {
-    if (!jobId) return;
+  const { data, loading, error } = useQuery(findJobQuery, {
+    variables: { id: jobId },
+  });
+  const job = data?.job;
 
-    async function getJobData() {
-      const job = await getJob(jobId);
-      setJob(job);
-    }
-    getJobData();
-  }, [jobId]);
-
-  if (job === undefined) {
-    return <h1>Loading</h1>;
-  }
+  if (loading) return <h1>Loading</h1>;
+  if (error) return <h1>Whops, something didn't work</h1>;
 
   return (
     <div>
